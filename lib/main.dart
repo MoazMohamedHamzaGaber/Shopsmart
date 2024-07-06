@@ -1,52 +1,44 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopsmart_users/core/utils/shared_preference.dart';
 import 'package:shopsmart_users/features/layout/presentation/manage/cubit/cubit.dart';
+import 'package:shopsmart_users/features/layout/presentation/manage/cubit/states.dart';
 import 'package:shopsmart_users/features/layout/presentation/view/layout_view.dart';
 
+import 'core/utils/theme_data.dart';
 import 'firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreference.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  final isDarkTheme = await SharedPreference.getData(key: 'Theme') ?? false;
+  runApp( MyApp(isDarkTheme: isDarkTheme,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.isDarkTheme});
+  final bool isDarkTheme;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) =>LayoutCubit(),)
+        BlocProvider(create: (BuildContext context) =>LayoutCubit(isDarkTheme),)
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'ShopSmart',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // TRY THIS: Try running your application with "flutter run". You'll see
-          // the application has a purple toolbar. Then, without quitting the app,
-          // try changing the seedColor in the colorScheme below to Colors.green
-          // and then invoke "hot reload" (save your changes or press the "hot
-          // reload" button in a Flutter-supported IDE, or press "r" if you used
-          // the command line to start the app).
-          //
-          // Notice that the counter didn't reset back to zero; the application
-          // state is not lost during the reload. To reset the state, use hot
-          // restart instead.
-          //
-          // This works for code too, not just values: Most code changes can be
-          // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const LayoutView(),
+      child: BlocBuilder<LayoutCubit,LayoutStates>(
+        builder: (BuildContext context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'ShopSmart',
+            theme: Styles.themeData(isDarkTheme: LayoutCubit.get(context).isDarkTheme, context: context),
+            home: const LayoutView(),
+          );
+        },
       ),
     );
   }
