@@ -192,33 +192,33 @@ AppBar appBar({
 //       ),
 //     );
 
-// Widget myHeart({
-//   double size = 18,
-//   IconData iconData = IconlyLight.heart,
-//   Color? color,
-//   required Function function,
-//   Color backgroundColor = Colors.transparent,
-//   bool circle = false,
-// }) {
-//   return Material(
-//     color: circle ? backgroundColor : Colors.transparent,
-//     shape: const CircleBorder(),
-//     child: circle
-//         ? IconButton(
-//       onPressed: () {},
-//       icon: Icon(
-//         iconData,
-//         size: size,
-//         color: color,
-//       ),
-//     )
-//         : Icon(
-//       iconData,
-//       size: size,
-//       color: color,
-//     ),
-//   );
-// }
+Widget myHeart({
+  double size = 18,
+  IconData iconData = IconlyLight.heart,
+  Color? color,
+  required Function function,
+  Color backgroundColor = Colors.transparent,
+  bool circle = false,
+}) {
+  return Material(
+    color: circle ? backgroundColor : Colors.transparent,
+    shape: const CircleBorder(),
+    child: circle
+        ? IconButton(
+      onPressed: () {},
+      icon: Icon(
+        iconData,
+        size: size,
+        color: color,
+      ),
+    )
+        : Icon(
+      iconData,
+      size: size,
+      color: color,
+    ),
+  );
+}
 
 // Widget buildItem(final products, context, ProductModel model)  {
 //   Size size = MediaQuery
