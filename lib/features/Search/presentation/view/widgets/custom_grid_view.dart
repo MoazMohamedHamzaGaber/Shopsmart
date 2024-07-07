@@ -24,7 +24,6 @@ class CustomGridView extends StatelessWidget {
             child: DynamicHeightGridView(
               physics: const BouncingScrollPhysics(),
               builder: (context, index) =>  buildItem(context,products[index],),
-             // builder: (context, index) =>  BuildItemSearch(model: products[index],),
               itemCount: products.length,
               crossAxisCount: 2,
             ),

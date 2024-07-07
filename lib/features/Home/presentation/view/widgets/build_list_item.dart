@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shopsmart_users/features/Search/data/model/product_model.dart';
 
 import '../../../../../core/loading/image_loading.dart';
 import '../../../../../core/utils/components.dart';
 
 class BuildListItem extends StatelessWidget {
-  const BuildListItem({super.key});
+  const BuildListItem({super.key, required this.model});
+
+  final ProductModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class BuildListItem extends StatelessWidget {
                     height: size.height * 0.18,
                     width: size.width * 0.18,
                     fit: BoxFit.fill,
-                    imageUrl: "https://th.bing.com/th/id/OIP.IVJnH-IgjutT-MAldsMlTAHaFL?rs=1&pid=ImgDetMain",
+                    imageUrl: model.productImage!,
                     placeholder: (context, url) => const ImageLoading(),
                     errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
@@ -51,11 +54,11 @@ class BuildListItem extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: size.width * 0.6,
-                        child: const Text(
-                          'productTitle',
+                        child: Text(
+                          model.productTitle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -82,8 +85,8 @@ class BuildListItem extends StatelessWidget {
                       const SizedBox(
                         height: 5,
                       ),
-                      const Text(
-                        'productPrice',
+                       Text(
+                        '\$${model.productPrice}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
