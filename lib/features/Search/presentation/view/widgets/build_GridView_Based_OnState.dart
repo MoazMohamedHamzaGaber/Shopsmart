@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../manage/cubit/states.dart';
 import 'custom_grid_view.dart';
 
-Widget buildGridViewBasedOnState(SearchStates state) {
+Widget buildGridViewBasedOnState(SearchStates state,final stream) {
   if (state is AllProductsLoadingStates) {
     return const Center(
       child: CircularProgressIndicator(),
@@ -23,7 +23,7 @@ Widget buildGridViewBasedOnState(SearchStates state) {
     }
 
     // Display the CustomGridView with products
-    return CustomGridView(products: products);
+    return CustomGridView(stream: stream,);
   } else if (state is AllProductsErrorStates) {
     // Display error message if an error state is reached
     return Center(

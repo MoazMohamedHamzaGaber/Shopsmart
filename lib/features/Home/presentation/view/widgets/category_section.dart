@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shopsmart_users/core/utils/styles.dart';
+import '../../../../../core/utils/const.dart';
+import '../../../../Search/presentation/view/search_view.dart';
 import '../../../data/model/categories_model.dart';
 import 'build_item_category.dart';
 
@@ -31,13 +34,13 @@ class CategorySection extends StatelessWidget {
                     image: CategoriesModel.model[index].image,
                     name: CategoriesModel.model[index].name,
                     function: () {
-                      // navigateTo(
-                      //     context,
-                      //     SearchView(
-                      //         title: CategoriesModel.model[index].name,
-                      //         stream: FirebaseFirestore.instance
-                      //             .collection('products').where('productCategory',isEqualTo: CategoriesModel.model[index].name)
-                      //             .snapshots()));
+                      navigateTo(
+                          context,
+                          SearchView(
+                              title: CategoriesModel.model[index].name,
+                              stream: FirebaseFirestore.instance
+                                  .collection('products').where('productCategory',isEqualTo: CategoriesModel.model[index].name)
+                                  .snapshots()));
                     },
                   );
                 },
