@@ -4,6 +4,8 @@ import 'package:shopsmart_users/features/Search/data/model/product_model.dart';
 
 import '../../../../../core/loading/image_loading.dart';
 import '../../../../../core/utils/components.dart';
+import '../../../../../core/utils/const.dart';
+import '../../../../Details/presentaton/view/details_view.dart';
 
 class BuildListItem extends StatelessWidget {
   const BuildListItem({super.key, required this.model});
@@ -15,15 +17,15 @@ class BuildListItem extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () {
-        // navigateTo(
-        //     context,
-        //     DetailsView(
-        //       image: products['productImage'],
-        //       title: products['productTitle'],
-        //       price: products['productPrice'],
-        //       category: products['productCategory'],
-        //       description: products['productDescription'],
-        //     ));
+        navigateTo(
+            context,
+            DetailsView(
+              image: model.productImage!,
+              title: model.productTitle,
+              price: model.productPrice,
+              category:model.productCategory!,
+              description: model.productDescription,
+            ));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,

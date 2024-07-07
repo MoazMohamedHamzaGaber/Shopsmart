@@ -5,8 +5,10 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shopsmart_users/features/layout/presentation/manage/cubit/cubit.dart';
 
+import '../../features/Details/presentaton/view/details_view.dart';
 import '../../features/Search/data/model/product_model.dart';
 import '../loading/image_loading.dart';
+import 'const.dart';
 
 AppBar buildAppBar({
   required String image,
@@ -283,15 +285,15 @@ Widget buildItem(context, ProductModel model)  {
       .size;
   return InkWell(
     onTap: () {
-      // navigateTo(
-      //     context,
-      //     DetailsView(
-      //       image: model.productImage,
-      //       title: model.productTitle,
-      //       price: model.productPrice,
-      //       category: model.productCategory,
-      //       description: model.productDescription,
-      //     ));
+      navigateTo(
+          context,
+          DetailsView(
+            image: model.productImage!,
+            title: model.productTitle,
+            price: model.productPrice,
+            category: model.productCategory!,
+            description: model.productDescription,
+          ));
     },
     child: Container(
       decoration: BoxDecoration(
