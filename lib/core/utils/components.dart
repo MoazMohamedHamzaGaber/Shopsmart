@@ -1,6 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shopsmart_users/features/layout/presentation/manage/cubit/cubit.dart';
+
+import '../../features/Search/data/model/product_model.dart';
+import '../loading/image_loading.dart';
 
 AppBar buildAppBar({
   required String image,
@@ -192,6 +198,57 @@ AppBar appBar({
 //       ),
 //     );
 
+Widget buildTextField({
+  required context,
+  required TextEditingController controller,
+  required String title,
+  required TextInputType keyboardType,
+  Function? onChanged,
+  String? validate,
+  int? maxLength,
+  int? minLines,
+  int? maxLines,
+  double height = 100,
+  List<TextInputFormatter>? inputFormatters,
+  Widget? prefix,
+  IconData? prefixIcon,
+}) =>
+    SizedBox(
+      height: height,
+      child: TextFormField(
+        cursorColor: Colors.transparent,
+        maxLength: maxLength,
+        minLines: minLines,
+        maxLines: maxLines,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        onChanged: (e){
+          onChanged!(e);
+        },
+        validator: (value) {
+          if (value!.isEmpty) {
+            return validate;
+          }
+          return null;
+        },
+        controller: controller,
+        decoration: InputDecoration(
+            filled: true,
+            hintText: title,
+            prefix: prefix,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            prefixIcon: Icon(prefixIcon)
+        ),
+      ),
+    );
+
 Widget myHeart({
   double size = 18,
   IconData iconData = IconlyLight.heart,
@@ -220,141 +277,133 @@ Widget myHeart({
   );
 }
 
-// Widget buildItem(final products, context, ProductModel model)  {
-//   Size size = MediaQuery
-//       .of(context)
-//       .size;
-//   User? user = FirebaseAuth.instance.currentUser;
-//   return BlocConsumer<CartCubit, CartStates>(
-//     listener: (BuildContext context, state) {
-//       if (state is CreateCartSuccessStates) {
-//         showToast(text: 'Product has been added into cart');
-//       }
-//     },
-//     builder: (BuildContext context, Object? state) {
-//       final cartId = const Uuid().v4();
-//       return InkWell(
-//         onTap: () {
-//           navigateTo(
-//               context,
-//               DetailsView(
-//                 image: model.productImage,
-//                 title: model.productTitle,
-//                 price: model.productPrice,
-//                 category: model.productCategory,
-//                 description: model.productDescription,
-//               ));
-//         },
-//         child: Container(
-//           decoration: BoxDecoration(
-//             color: ProfileCubit
-//                 .get(context)
-//                 .isDark
-//                 ? Colors.white24
-//                 : Colors.grey[300],
-//             borderRadius: BorderRadius.circular(8),
-//           ),
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               children: [
-//                 ClipRRect(
-//                   borderRadius: BorderRadius.circular(12),
-//                   child: Image(
-//                     image: NetworkImage(model.productImage),
-//                     height: size.height * 0.18,
-//                     width: size.width * 0.3,
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 5,
-//                 ),
-//                 Row(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Expanded(
-//                       child: Text(
-//                         model.productTitle,
-//                         maxLines: 1,
-//                         overflow: TextOverflow.ellipsis,
-//                         style: const TextStyle(
-//                           fontWeight: FontWeight.bold,
-//                           //color: ProfileCubit.get(context).isDark?Colors.black:Colors.black
-//                         ),
-//                       ),
-//                     ),
-//                     const Spacer(),
-//                     myHeart(size: 20, function: () {}),
-//                   ],
-//                 ),
-//                 const SizedBox(
-//                   height: 5,
-//                 ),
-//                 Row(
-//                   children: [
-//                     Text(
-//                       '\$${model.productPrice}',
-//                       style: const TextStyle(
-//                         color: Colors.blue,
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                     const Spacer(),
-//                     Container(
-//                       width: 30,
-//                       height: 30,
-//                       decoration: BoxDecoration(
-//                           color: Colors.lightBlue,
-//                           borderRadius: BorderRadius.circular(12)),
-//                       child: MaterialButton(
-//                         padding: EdgeInsets.zero,
-//                         onPressed:  () {
-//                           // final cartId = const Uuid().v4();
-//                           if(user !=null) {
-//                               CartCubit().get(context).cartCreate(
-//                               title: products['productTitle'],
-//                               price: products['productPrice'],
-//                               description:
-//                               products['productDescription'],
-//                               quantity: 1,
-//                               productId: model.productId,
-//                               category: products['productCategory'],
-//                               image: products['productImage'],
-//                               context: context,
-//                               cartId: cartId,
-//                             );
-//                           }
-//                           else if(user ==null){
-//                             buildShowDialog(
-//                               context: context,
-//                               image: 'admin assets/assets/images/warning.png',
-//                               name: 'Please login and continues',
-//                               function: () {
-//                                 Navigator.pop(context);
-//                               },
-//                             );
-//                           }
-//                           //CartCubit().get(context).checkIconStatus(cartId);
-//                          // showToast(text: 'This is product already exit');
-//                         },
-//                         child: const Icon(
-//                            Icons
-//                               .add_shopping_cart,
-//                           size: 18,
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
+Widget buildItem(context, ProductModel model)  {
+  Size size = MediaQuery
+      .of(context)
+      .size;
+  return InkWell(
+    onTap: () {
+      // navigateTo(
+      //     context,
+      //     DetailsView(
+      //       image: model.productImage,
+      //       title: model.productTitle,
+      //       price: model.productPrice,
+      //       category: model.productCategory,
+      //       description: model.productDescription,
+      //     ));
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: LayoutCubit
+            .get(context)
+            .isDarkTheme
+            ? Colors.white24
+            : Colors.grey[300],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: CachedNetworkImage(
+                imageUrl: model.productImage!,
+                placeholder: (context, url) => const ImageLoading(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                height: size.height * 0.18,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    model.productTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      //color: ProfileCubit.get(context).isDark?Colors.black:Colors.black
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                myHeart(size: 20, function: () {}),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Text(
+                  '\$${model.productPrice}',
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: MaterialButton(
+                    padding: EdgeInsets.zero,
+                    onPressed:  () {
+                      // final cartId = const Uuid().v4();
+                      // if(user !=null) {
+                      //     CartCubit().get(context).cartCreate(
+                      //     title: products['productTitle'],
+                      //     price: products['productPrice'],
+                      //     description:
+                      //     products['productDescription'],
+                      //     quantity: 1,
+                      //     productId: model.productId,
+                      //     category: products['productCategory'],
+                      //     image: products['productImage'],
+                      //     context: context,
+                      //     cartId: cartId,
+                      //   );
+                      // }
+                      // else if(user ==null){
+                      //   buildShowDialog(
+                      //     context: context,
+                      //     image: 'admin assets/assets/images/warning.png',
+                      //     name: 'Please login and continues',
+                      //     function: () {
+                      //       Navigator.pop(context);
+                      //     },
+                      //   );
+                      // }
+                      //CartCubit().get(context).checkIconStatus(cartId);
+                      // showToast(text: 'This is product already exit');
+                    },
+                    child: const Icon(
+                      Icons
+                          .add_shopping_cart,
+                      size: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 // Future<void> buildShowDialog({
 //   context,

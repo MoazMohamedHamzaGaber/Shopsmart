@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopsmart_users/features/Search/presentation/view/search_view.dart';
 import 'package:shopsmart_users/features/layout/presentation/manage/cubit/states.dart';
 
 import '../../../../../core/utils/shared_preference.dart';
@@ -39,7 +40,7 @@ class LayoutCubit extends Cubit<LayoutStates>
   }
   List<Widget>screen=[
     const HomeView(),
-    const HomeView(),
+    const SearchView(),
     const HomeView(),
     const HomeView(),
     //  SearchView(title: 'Store Products',stream: FirebaseFirestore.instance.collection('products').snapshots()),

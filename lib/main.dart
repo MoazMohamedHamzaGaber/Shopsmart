@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopsmart_users/core/utils/shared_preference.dart';
+import 'package:shopsmart_users/features/Search/data/repository/get_products_repos_impl.dart';
+import 'package:shopsmart_users/features/Search/presentation/manage/cubit/cubit.dart';
 import 'package:shopsmart_users/features/layout/presentation/manage/cubit/cubit.dart';
 import 'package:shopsmart_users/features/layout/presentation/manage/cubit/states.dart';
 import 'package:shopsmart_users/features/layout/presentation/view/layout_view.dart';
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) =>LayoutCubit(isDarkTheme),)
+        BlocProvider(create: (BuildContext context) =>LayoutCubit(isDarkTheme),),
+        BlocProvider(create: (BuildContext context) =>SearchCubit(GetProductsReposImpl())..getProducts()),
       ],
       child: BlocBuilder<LayoutCubit,LayoutStates>(
         builder: (BuildContext context, state) {
