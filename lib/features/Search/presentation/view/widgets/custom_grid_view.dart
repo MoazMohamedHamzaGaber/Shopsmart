@@ -3,7 +3,6 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shopsmart_users/core/utils/components.dart';
 import '../../../data/model/product_model.dart';
-import 'build_Item.dart';
 
 class CustomGridView extends StatelessWidget {
   const CustomGridView({super.key,required this.products});
